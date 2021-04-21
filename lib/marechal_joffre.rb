@@ -1,5 +1,6 @@
 require 'dotenv'
 require 'twitter'
+require 'pry'
 
 Dotenv.load('../.env')
 
@@ -23,10 +24,10 @@ def send_tweet(client, tweet)
   client.update(tweet)
 end
 
-j = rand_journalist(5)
-c = login_twitter
-
-j.each do |person|
-  t = "#bonjour_monde Salut #{person} ! Continuez à défendre une presse libre et indépendante :) !"
-  send_tweet(c, t)
+def search_hashtag(client, query)
+  client.search(query, count: 25)
 end
+
+c = login_twitter
+result = search_hashtag(c, "#bonjour_monde")
+c.favorite(*result)
